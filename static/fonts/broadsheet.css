@@ -1,0 +1,7 @@
+
+@font-face {
+    font-family:"Broadsheet";
+    src:url("broadsheet.woff2") format("woff2"),url("broadsheet.woff") format("woff"),url("broadsheet.otf") format("opentype");
+    font-style:normal;font-weight:400;
+}
+        

@@ -1,0 +1,7 @@
+
+@font-face {
+    font-family:"Broadsheet-Italic";
+    src:url("broadsheet-italic.woff2") format("woff2"),url("broadsheet-italic.woff") format("woff"),url("broadsheet-italic.otf") format("opentype");
+    font-style:normal;font-weight:400;
+}
+        

@@ -1,0 +1,42 @@
+project:
+  type: book
+
+resources:
+  - "static/*"
+  - "static/fonts/*"
+  - "static/data/*"
+
+book:
+  title: "2023 Advent of Code"
+  author: "@hrbrmstr"
+  date: "December 2023"
+  favicon: static/favicon.ico
+  twitter-card: true
+  site-url: https://rud.is/bools/2023-advofcode/
+  search: true
+  repo-url: https://gitlab.com/hrbrmstr/2023-advofcode/
+  page-footer: "Copyright 2023, boB Rudis"
+  comments:
+    hypothesis: true
+  page-navigation: true
+  chapters:
+    - index.qmd
+    - day-01.qmd
+    - day-02.qmd
+
+format:
+  html:
+    include-in-header: 
+      - static/incl.html
+    monofont: "Monaspace Radon Var"
+    code-tools: true
+    code-fold: true
+    code-copy: true
+    highlight-style: ayu-dark
+    theme: 
+      - cosmo
+      - static/custom.scss
+    css: static/custom.css
+
+
+

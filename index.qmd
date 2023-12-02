@@ -1,0 +1,7 @@
+# Preface {.unnumbered}
+
+This is the Quarto version of [this ObservableHQ collection](https://observablehq.com/@hrbrmstr/2023-day-1-trebuchet?collection=@hrbrmstr/2023-advent-of-code).
+
+Made with help from my [Quartize browser extension](https://chromewebstore.google.com/detail/quartize/bcggojdjahdjhccmeanbnidmoicknmbb).
+
+![](/static/advent-of-code.png)

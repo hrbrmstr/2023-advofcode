@@ -1,0 +1,7 @@
+
+@font-face {
+    font-family:"Antiquarian";
+    src:url("antiquarian.woff2") format("woff2"),url("antiquarian.woff") format("woff"),url("antiquarian.otf") format("opentype");
+    font-style:normal;font-weight:400;
+}
+        

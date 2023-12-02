@@ -1,0 +1,376 @@
+---
+code-fold: false
+---
+# Day 1: Trebuchet?! {.unnumbered}
+
+![](static/Whimsical%20Christmas%20Advent.png)
+
+```{ojs}
+//| output: false
+await note(
+  `Thanks to WebR we can solve this year's Advent of Code puzzles in both R and JavaScript in the same Observable Notebook!`
+)
+```
+
+<span id='loader'>⏳</span> <span id='msg'>WebR is loading…</span>
+
+<https://adventofcode.com/2023/day/1>
+
+## Part 1
+
+The newly-improved calibration document consists of lines of text; each line originally contained a specific calibration value that the Elves now need to recover. On each line, the calibration value can be found by combining the first digit and the last digit (in that order) to form a single two-digit number.
+
+For example:
+
+```bash
+1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet
+```
+
+In this example, the calibration values of these four lines are 12, 38, 15, and 77. Adding these together produces 142.
+
+Consider your entire calibration document. What is the sum of all of the calibration values?`
+
+### Example Input Validation 1
+
+```{ojs}
+//| echo: false
+await note(
+  `A basic solution to this part is to split each string into characters and only look at the first and last actual digit (which will work for instances like \`trebu7chet\`).`
+)
+```
+
+```{ojs}
+sample1 = `1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet`;
+
+jsInputValidation1 = d3.sum(
+  sample1
+    .split("\n")
+    .filter((d) => d != "")
+    .map((d) => {
+      const digits = d.split("").filter((d) => d.match(/\d/));
+      return +`${digits[0]}${digits.at(-1)}`;
+    })
+)
+```
+
+```{ojs}
+//| echo: false
+jsInputValidation1
+```
+
+```{ojs}
+rInputValidation1 = await webR.evalRNumber(`
+r"(${sample1})" |>
+  stri_split_lines1() |> 
+  sapply(\\(.s) {
+    chars <- strsplit(.s, '')[[1]]
+    chars <- chars[grepl(r"(\\d)", chars)]
+    as.integer(sprintf("%s%s", chars[1], chars[length(chars)]))
+  }) |> 
+  sum()
+`)
+```
+
+```{ojs}
+//| echo: false
+rInputValidation1
+```
+
+```{ojs}
+rInputValidation1 == jsInputValidation1
+```
+
+### Puzzle Input Question 1
+
+```{ojs}
+jsPuzzleInput1 = d3.sum(
+  puzzleInput
+    .split("\n")
+    .filter((d) => d != "")
+    .map((d) => {
+      const digits = d.split("").filter((d) => d.match(/\d/));
+      return +`${digits[0]}${digits.at(-1)}`;
+    })
+)
+```
+
+```{ojs}
+//| echo: false
+jsPuzzleInput1
+```
+
+```{ojs}
+rPuzzleInput1 = await webR.evalRNumber(`
+r"(${puzzleInput})" |>
+  stri_split_lines1() |> 
+  sapply(\\(.s) {
+    chars <- strsplit(.s, '')[[1]]
+    chars <- chars[grepl(r"(\\d)", chars)]
+    as.integer(sprintf("%s%s", chars[1], chars[length(chars)]))
+  }) |> 
+  sum()
+`)
+```
+
+```{ojs}
+//| echo: false
+rPuzzleInput1
+```
+
+```{ojs}
+jsPuzzleInput1 == rPuzzleInput1
+```
+
+## Part 2 
+
+Your calculation isn't quite right. It looks like some of the digits are actually spelled out with letters: one, two, three, four, five, six, seven, eight, and nine also count as valid "digits".
+
+Equipped with this new information, you now need to find the real first and last digit on each line. For example:
+
+```bash
+two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen
+```
+
+In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76. Adding these together produces 281.
+
+What is the sum of all of the calibration values?
+
+```{ojs}
+//| echo: false
+await note(`As usual, the instructions are not completely helpful, and an initial naive solution failed to take into account that they mean for you to take each spelled out digit as you work from first to last character in each string. It's still a pretty simple solution.`)
+```
+
+#### JS Helpers
+
+```{ojs}
+numberMap = ({
+  one: "1",
+  two: "2",
+  three: "3",
+  four: "4",
+  five: "5",
+  six: "6",
+  seven: "7",
+  eight: "8",
+  nine: "9"
+})
+```
+
+```{ojs}
+function parseDigits(str) {
+  let d = [];
+  while (str.length > 0) {
+    d.push(str.match(/^(\d|one|two|three|four|five|six|seven|eight|nine)/));
+    str = str.slice(1);
+  }
+  return d.filter((d) => d).map((d) => numberMap[d[0]] || d[0]);
+}
+```
+
+#### WebR Helpers
+
+```{ojs}
+//| echo: false
+await note(
+  "WebR helper functions can be found in the WebR initialization code block."
+)
+```
+
+### Example Input Validation 2
+
+```{ojs}
+sample2 = `two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen`
+
+jsInputValidation2 = d3.sum(
+  sample2
+    .split("\n")
+    .filter((d) => d != "")
+    .map((d) => {
+      const digits = parseDigits(d);
+      return +`${digits[0][0]}${digits.at(-1)[0]}`;
+    })
+)
+```
+
+```{ojs}
+//| echo: false
+jsInputValidation2
+```
+
+```{ojs}
+rInputValidation2 = await webR.evalRNumber(`
+r"(${sample2})" |>
+  stri_split_lines1() |> 
+  sapply(\\(.s) {
+    digits <- parse_digits(.s)
+    as.integer(sprintf("%s%s", digits[1], digits[length(digits)]))
+  }) |> 
+  sum()
+`)
+```
+
+```{ojs}
+//| echo: false
+rInputValidation2
+```
+
+```{ojs}
+rInputValidation2 == jsInputValidation2
+```
+
+### Puzzle Input Question 2`
+
+```{ojs}
+jsPuzzleInput2 = d3.sum(
+  puzzleInput
+    .split("\n")
+    .filter((d) => d != "")
+    .map((d) => {
+      const digits = parseDigits(d);
+      return +`${digits[0][0]}${digits.at(-1)[0]}`;
+    })
+)
+```
+
+```{ojs}
+//| echo: false
+jsPuzzleInput2
+```
+
+```{ojs}
+rPuzzleInput2 = await webR.evalRNumber(`
+r"(${puzzleInput})" |>
+  stri_split_lines1() |> 
+  sapply(\\(.s) {
+    digits <- parse_digits(.s)
+    as.integer(sprintf("%s%s", digits[1], digits[length(digits)]))
+  }) |> 
+  sum()
+`)
+```
+
+```{ojs}
+//| echo: false
+rPuzzleInput2
+```
+
+```{ojs}
+jsPuzzleInput2 == rPuzzleInput2
+```
+
+## Puzzle Input
+
+```{ojs}
+puzzleInput = FileAttachment("/static/data/01-01.txt").text()
+```
+
+```{ojs}
+webR = {
+  const { WebR, ChannelType } = await import(
+    "https://cdn.jsdelivr.net/npm/webr/dist/webr.mjs"
+  );
+
+  const intWebR = new WebR({
+    channelType: ChannelType.PostMessage,
+    interactive: false
+  });
+
+  await intWebR.init();
+
+  await intWebR.installPackages(["stringi"], true);
+  await intWebR.evalRVoid(`library(stringi)`);
+
+  await intWebR.evalRVoid(`
+setNames(
+  c(1:9, 1:9),
+  c(
+    "one", "two", "three", "four", "five", 
+    "six", "seven", "eight", "nine", 1:9)
+) -> number_map
+
+number_regex <- sprintf("^(%s)", paste0(names(number_map), collapse="|"))
+
+parse_digits <- function (str) {
+  out <- c()
+  while (nchar(str) > 0) {
+    match <- stri_match_first_regex(str, number_regex)[1]
+    out <- c(out, match)
+    str <- substring(str, 2);
+  }
+  unname(number_map[as.character(na.omit(out))])
+}`);
+
+  document.querySelector("#loader").innerText = "🟢";
+  document.querySelector("#msg").innerText = "WebR loaded!";
+
+  return intWebR;
+}
+```
+
+```{ojs}
+//| output: false
+import { style } from "@hrbrmstr/hrbrthemes"
+```
+
+```{ojs}
+//| output: false
+async function note(msg) {
+  return html`<style>
+  .container {
+  display: flex;
+  align-items: flex-start;
+  width: 500px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  width: 32px;
+  margin-right: 6px;
+}
+
+.text {
+  font-family: monaspace, sans-serif;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  width: calc(100% - 32px);
+  min-height: 32px;
+  color: #1E792C;
+}
+</style>
+<div class="container">
+  <div class="icon">
+    ${await FileAttachment("/static/christmas-ball-fill.svg").image()}
+  </div>
+  <div class="text">
+    ${msg}
+  </div>
+</div>`;
+}
+```
+
+Christmas ball/ornament icon from:<br/>https://icon-sets.iconify.design/mingcute/christmas-ball-fill/`
+
+```{ojs}
+//| output: false
+style
+```
