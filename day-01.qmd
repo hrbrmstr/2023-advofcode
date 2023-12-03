@@ -6,7 +6,7 @@ code-fold: false
 ![](static/Whimsical%20Christmas%20Advent.png)
 
 ```{ojs}
-//| output: false
+//| echo: false
 await note(
   `Thanks to WebR we can solve this year's Advent of Code puzzles in both R and JavaScript in the same Observable Notebook!`
 )

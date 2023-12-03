@@ -23,6 +23,7 @@ book:
     - index.qmd
     - day-01.qmd
     - day-02.qmd
+    - day-03.qmd
 
 format:
   html:
