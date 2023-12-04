@@ -24,6 +24,7 @@ book:
     - day-01.qmd
     - day-02.qmd
     - day-03.qmd
+    - day-04.qmd
 
 format:
   html:
